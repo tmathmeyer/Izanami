@@ -27,14 +27,19 @@ public class Gen {
 
 	public static MapData ds(int size) {
 		final int DATA_SIZE = size;
-		final double SEED = 1000.0;
+		final float SEED = 0.0f;
 		
-		double h = 500.0;
-		double min = h;
-		double max = h;
+		float h = 500.0f;
+		float min = h;
+		float max = h;
 		
-		double[][] data = new double[DATA_SIZE][DATA_SIZE];
-		data[0][0] = data[0][DATA_SIZE-1] = data[DATA_SIZE-1][0] = data[DATA_SIZE-1][DATA_SIZE-1] = SEED;
+		float[][] data = new float[DATA_SIZE][DATA_SIZE];
+		for(int i = 0; i < DATA_SIZE; i++) {
+			data[0][i] = SEED;
+			data[i][0] = SEED;
+			data[DATA_SIZE-1][i] = SEED;
+			data[i][DATA_SIZE-1] = SEED;
+		}
 		
 		Random r = new Random();
 		for(int sideLength = DATA_SIZE-1;
@@ -48,8 +53,8 @@ public class Gen {
 					data[x][y+sideLength] +
 					data[x+sideLength][y+sideLength];
 					avg /= 4.0;
-					double temp = avg + (r.nextDouble()*2*h) - h;
-					data[x+halfSide][y+halfSide] = temp;
+					float temp = (float) (avg + (r.nextDouble()*2*h) - h);
+					if (data[x+halfSide][y+halfSide] == 0)data[x+halfSide][y+halfSide] = (float) temp;
 					if (temp > max)max=temp;
 					if (temp < min)min=temp;
 				}
@@ -63,13 +68,13 @@ public class Gen {
 					        data[x][(y+halfSide)%(DATA_SIZE-1)] +
 					        data[x][(y-halfSide+DATA_SIZE-1)%(DATA_SIZE-1)];
 					avg /= 4.0;
-					double temp = avg + (r.nextDouble()*2*h) - h;
-					data[x][y] = temp;
+					float temp = (float) (avg + (r.nextDouble()*2*h) - h);
+					data[x][y] = (float) temp;
 					if (temp > max)max=temp;
 					if (temp < min)min=temp;
 					
-					if(x == 0)	data[DATA_SIZE-1][y] = temp;
-					if(y == 0)	data[x][DATA_SIZE-1] = temp;
+					if(x == 0)	data[DATA_SIZE-1][y] = (float) temp;
+					if(y == 0)	data[x][DATA_SIZE-1] = (float) temp;
 				}
 			}
 		}
